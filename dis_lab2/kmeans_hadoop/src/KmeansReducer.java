@@ -35,7 +35,7 @@ public class KmeansReducer extends Reducer<IntWritable, Record, Text, Text> {
         sum.average();
 
         centroidId.set(centroid.toString());
-        centroidValue.set(sum.getFeaturesString());
+        centroidValue.set(sum.toString());
         context.write(centroidId, centroidValue);
     }
 }

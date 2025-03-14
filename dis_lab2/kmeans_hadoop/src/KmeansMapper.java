@@ -1,6 +1,7 @@
 package kmeans_hadoop.src;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.naming.Context;
 
@@ -32,17 +33,16 @@ public class KmeansMapper extends Mapper<LongWritable, Text, IntWritable, Record
         this.centroids = new Record[k];
         for (int i = 0; i < k; i++) {
             String centroidStr = context.getConfiguration().get("centroid." + i);
-            this.centroids[i] = new Record(centroidStr.split(","), new int[]{-1});
+            this.centroids[i] = new Record(centroidStr.split(","));
         }
     }
 
     public void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
 
-        // Contruct the Record
-        String[] RecordString = value.toString().split(",");
-        int index = (int) key.get();
-        Record.set(RecordString, new int[]{index});
+        String[] parts = value.toString().split(",");
+        String[] featuresOnly = Arrays.copyOfRange(parts, 0, parts.length - 1);
+        Record.set(featuresOnly);
 
         // Initialize variables
         Double minDist = Double.POSITIVE_INFINITY;

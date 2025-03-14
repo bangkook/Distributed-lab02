@@ -22,9 +22,13 @@ jar -cvf kmeans.jar -C build/ . config.xml
 
 # Step 5: Remove previous output from HDFS
 echo "Removing previous output from HDFS..."
-hdfs dfs -rm -r /user/dis_lab2/output
+hdfs dfs -rm -r -f /user/dis_lab2/output
+hdfs dfs -rm -r -f /user/dis_lab2/input
+hdfs dfs -mkdir /user/dis_lab2/input
+hdfs dfs -put data/iris.data /user/dis_lab2/input
+
 
 # Step 6: Run Hadoop job
 echo "Running Hadoop KMeans job..."
-hadoop jar kmeans.jar kmeans_hadoop.src.KmeansDriver /user/dis_lab2/input/iris.txt /user/dis_lab2/output
+hadoop jar kmeans.jar kmeans_hadoop.src.KmeansDriver /user/dis_lab2/input/iris.data /user/dis_lab2/output
 
